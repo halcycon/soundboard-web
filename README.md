@@ -42,7 +42,12 @@ First boot seeds a few sample tones into the data volume if the catalog is empty
 3. Start RTMP from the soundboard UI (or set URL before boot with `autoStartRtmp`).
 4. In Studio audio mixer: **Mix** mode, enable **Duck** on the soundboard strip.
 
-## Dev
+## Demo samples
+
+First boot seeds a small **original** FX pack (UI clicks, rimshot, whoosh, etc.).  
+We intentionally do **not** ship audio from the example soundboard repos (Daft Punk stems, meme clips, game/TV bites) — those are copyrighted even when the surrounding code is MIT.
+
+Upload your own clips in the UI for production use.
 
 ```bash
 npm install

@@ -124,11 +124,19 @@ select {
 
 .offline-banner {
   display: none;
-  margin-bottom: 0.75rem;
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: min(520px, calc(100vw - 1.5rem));
+  margin: 0;
   padding: 0.75rem 1rem;
   border-radius: var(--radius);
   background: #7f1d1dcc;
   border: 1px solid #f87171;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
 }
 
 .offline-banner.show {
@@ -137,12 +145,20 @@ select {
 
 .error-banner {
   display: none;
-  margin-bottom: 0.75rem;
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: min(520px, calc(100vw - 1.5rem));
+  margin: 0;
   padding: 0.75rem 1rem;
   border-radius: var(--radius);
   background: #7f1d1dcc;
   border: 1px solid #f87171;
   white-space: pre-wrap;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
 }
 
 .error-banner.show {
@@ -151,15 +167,30 @@ select {
 
 .playing-toast {
   display: none;
-  margin-bottom: 0.75rem;
-  padding: 0.55rem 1rem;
-  border-radius: var(--radius);
+  position: fixed;
+  left: 50%;
+  bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 35;
+  margin: 0;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
   background: #134e4acc;
   border: 1px solid var(--accent);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  pointer-events: none;
+  font-weight: 600;
 }
 
 .playing-toast.show {
   display: block;
+}
+
+@media (min-width: 720px) {
+  .playing-toast {
+    bottom: 1.25rem;
+  }
 }
 
 .toolbar {
