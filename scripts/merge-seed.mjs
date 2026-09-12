@@ -36,17 +36,44 @@ if (existsSync(dataCatalogPath)) {
 
 const demoLabels = new Set(seedCatalog.map((s) => `${s.category}::${s.text}`));
 const DEMO_CATEGORIES = new Set(['UI', 'FX', 'Stingers', 'General']);
+const DEMO_TEXTS = new Set([
+  // synthetic v3
+  'Beep',
+  'Boop',
+  'Buzz',
+  'Chime',
+  'Click',
+  'Pop',
+  'Notify',
+  'Rimshot',
+  'Whoosh',
+  'Laser',
+  'Power Up',
+  'Fanfare',
+  'Buzzer',
+  'Coin',
+  // Kenney CC0 v4
+  'Select',
+  'Confirm',
+  'Error',
+  'Pluck',
+  'Bong',
+  'Retro Laser',
+  'Zap',
+  'Explosion',
+  'Metal Hit',
+  'Force Field',
+  'Thruster',
+  'Alert',
+  'Coins',
+  'Door',
+]);
 
 // Drop previous demo rows when seed version changes (keep uploads / other categories).
 if (seedVersion !== currentVersion) {
   catalog = catalog.filter((s) => {
     const key = `${s.category}::${s.text}`;
-    const isOldDemo =
-      DEMO_CATEGORIES.has(s.category) &&
-      (demoLabels.has(key) ||
-        ['Beep', 'Boop', 'Buzz', 'Chime', 'Click', 'Pop', 'Notify', 'Rimshot', 'Whoosh', 'Laser', 'Power Up', 'Fanfare', 'Buzzer', 'Coin'].includes(
-          s.text,
-        ));
+    const isOldDemo = DEMO_CATEGORIES.has(s.category) && (demoLabels.has(key) || DEMO_TEXTS.has(s.text));
     return !isOldDemo;
   });
 }

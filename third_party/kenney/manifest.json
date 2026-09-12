@@ -1,0 +1,146 @@
+[
+  {
+    "text": "Click",
+    "category": "UI",
+    "color": "teal",
+    "shortcut": "1",
+    "file": "Audio/click.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Select",
+    "category": "UI",
+    "color": "blue",
+    "shortcut": "2",
+    "file": "Audio/select.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Confirm",
+    "category": "UI",
+    "color": "green",
+    "shortcut": "3",
+    "file": "Audio/confirm.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Error",
+    "category": "UI",
+    "color": "red",
+    "shortcut": "4",
+    "file": "Audio/error.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Pluck",
+    "category": "UI",
+    "color": "purple",
+    "shortcut": "5",
+    "file": "Audio/pluck.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Bong",
+    "category": "UI",
+    "color": "orange",
+    "shortcut": "6",
+    "file": "Audio/bong.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Laser",
+    "category": "FX",
+    "color": "pink",
+    "shortcut": "7",
+    "file": "Audio/laser.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Retro Laser",
+    "category": "FX",
+    "color": "pink",
+    "shortcut": "8",
+    "file": "Audio/retrolaser.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Zap",
+    "category": "FX",
+    "color": "yellow",
+    "shortcut": "9",
+    "file": "Audio/zap.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Explosion",
+    "category": "FX",
+    "color": "red",
+    "shortcut": "0",
+    "file": "Audio/explosion.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Metal Hit",
+    "category": "FX",
+    "color": "orange",
+    "shortcut": null,
+    "file": "Audio/metalhit.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Force Field",
+    "category": "FX",
+    "color": "teal",
+    "shortcut": null,
+    "file": "Audio/forcefield.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Thruster",
+    "category": "FX",
+    "color": "blue",
+    "shortcut": null,
+    "file": "Audio/thruster.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Power Up",
+    "category": "Stingers",
+    "color": "green",
+    "shortcut": null,
+    "file": "Audio/powerup.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Fanfare",
+    "category": "Stingers",
+    "color": "yellow",
+    "shortcut": null,
+    "file": "Audio/fanfare.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Alert",
+    "category": "Stingers",
+    "color": "orange",
+    "shortcut": null,
+    "file": "Audio/alert.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Coins",
+    "category": "Stingers",
+    "color": "yellow",
+    "shortcut": null,
+    "file": "Audio/coins.mp3",
+    "source": "Kenney.nl (CC0)"
+  },
+  {
+    "text": "Door",
+    "category": "Stingers",
+    "color": "purple",
+    "shortcut": null,
+    "file": "Audio/door.mp3",
+    "source": "Kenney.nl (CC0)"
+  }
+]

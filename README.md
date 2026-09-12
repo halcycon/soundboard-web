@@ -44,8 +44,10 @@ First boot seeds a few sample tones into the data volume if the catalog is empty
 
 ## Demo samples
 
-First boot seeds a small **original** FX pack (UI clicks, rimshot, whoosh, etc.).  
-We intentionally do **not** ship audio from the example soundboard repos (Daft Punk stems, meme clips, game/TV bites) — those are copyrighted even when the surrounding code is MIT.
+First boot seeds **CC0** clips from [Kenney.nl](https://kenney.nl) (interface, sci-fi, digital, RPG packs).  
+See [`third_party/kenney/ATTRIBUTION.md`](third_party/kenney/ATTRIBUTION.md). Attribution is appreciated, not required.
+
+We do **not** ship audio from the example soundboard repos (Daft Punk stems, meme/TV bites) — those are not free to redistribute.
 
 Upload your own clips in the UI for production use.
 
