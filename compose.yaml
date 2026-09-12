@@ -1,0 +1,39 @@
+# Arcane / docker compose entrypoint.
+# Keep this file at repo root so Git Sync (syncDirectory) includes Dockerfile + source.
+#
+# Import in Arcane:
+#   Compose File Path: compose.yaml
+#   Enable Sync Files / syncDirectory
+# Set MUXSHED_RTMP_URL (and optional API_TOKEN) in the project env / .env
+
+services:
+  web-soundboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: soundboard-web:local
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      DATA_DIR: /data
+      MUXSHED_RTMP_URL: ${MUXSHED_RTMP_URL:-}
+      API_TOKEN: ${API_TOKEN:-}
+    volumes:
+      - soundboard-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8787/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  soundboard-data:

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+client/dist/
+data/sounds/*
+!data/sounds/.gitkeep
+data/catalog.json
+data/settings.json
+.env
+*.log
+.DS_Store
+.cursor/

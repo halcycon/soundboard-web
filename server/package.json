@@ -1,0 +1,17 @@
+{
+  "name": "@web-soundboard/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "build": "node -e \"console.log('server is plain JS')\"",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.0",
+    "hono": "^4.9.6",
+    "nanoid": "^5.1.5",
+    "ws": "^8.18.3"
+  }
+}
