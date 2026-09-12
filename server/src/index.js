@@ -92,13 +92,18 @@ app.use('/api/*', async (c, next) => {
   return next();
 });
 
-app.get('/api/health', (c) =>
-  c.json({
+app.get('/api/health', (c) => {
+  const missingFiles = catalog
+    .list()
+    .filter((s) => !existsSync(path.join(DATA_DIR, 'sounds', s.file)))
+    .map((s) => s.id);
+  return c.json({
     ok: true,
     sounds: catalog.list().length,
+    missingFiles,
     mixer: mixer.getStatus(),
-  }),
-);
+  });
+});
 
 app.get('/api/status', (c) => c.json(mixer.getStatus()));
 
@@ -218,6 +223,14 @@ app.post('/api/sounds/:id/play', async (c) => {
   const sound = catalog.get(id);
   const filePath = catalog.filePath(id);
   if (!sound || !filePath) return c.json({ error: 'not found' }, 404);
+  if (!existsSync(filePath)) {
+    return c.json(
+      {
+        error: `sound file missing on server (${sound.file}). Re-upload or recreate the data volume so seed files can copy.`,
+      },
+      404,
+    );
+  }
   const body = await c.req.json().catch(() => ({}));
   try {
     const voiceId = await mixer.play(id, filePath, {
@@ -226,6 +239,7 @@ app.post('/api/sounds/:id/play', async (c) => {
     });
     return c.json({ ok: true, voiceId, sound });
   } catch (err) {
+    console.error('play failed', id, err);
     return c.json({ error: err instanceof Error ? err.message : String(err) }, 500);
   }
 });

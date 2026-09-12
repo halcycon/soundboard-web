@@ -36,6 +36,8 @@ const playing = new Set();
 const localAudio = new Map();
 let deck = null;
 let online = navigator.onLine;
+let lastError = '';
+let playingLabel = '';
 
 const app = document.getElementById('app');
 
@@ -49,36 +51,88 @@ function fileUrl(id) {
   return `/api/sounds/${id}/file${qs}`;
 }
 
+function showError(msg) {
+  lastError = msg || '';
+  const el = document.getElementById('error-banner');
+  if (!el) {
+    render();
+    return;
+  }
+  if (!lastError) {
+    el.classList.remove('show');
+    el.textContent = '';
+    return;
+  }
+  el.textContent = lastError;
+  el.classList.add('show');
+}
+
+function setPlayingLabel(text) {
+  playingLabel = text || '';
+  const el = document.getElementById('playing-toast');
+  if (!el) return;
+  if (!playingLabel) {
+    el.classList.remove('show');
+    el.textContent = '';
+    return;
+  }
+  el.textContent = `Playing: ${playingLabel}`;
+  el.classList.add('show');
+}
+
+function updateStatusPills() {
+  const host = document.getElementById('status-row');
+  if (!host) return;
+  host.innerHTML = `
+    ${statusPill()}
+    <span class="pill">Voices ${status.activeVoices || 0}</span>
+    ${status.lastError ? `<span class="pill err" title="${escapeAttr(status.lastError)}">RTMP err</span>` : ''}
+  `;
+}
+
+async function playLocalMonitor(sound) {
+  if (!localMonitor) return;
+  let audio = localAudio.get(sound.id);
+  if (!audio) {
+    audio = new Audio(fileUrl(sound.id));
+    localAudio.set(sound.id, audio);
+  }
+  audio.currentTime = 0;
+  await audio.play();
+  audio.onended = () => {
+    playing.delete(sound.id);
+    if (playingLabel === sound.text) setPlayingLabel('');
+    renderPadsOnly();
+  };
+}
+
 async function triggerPlay(sound) {
   haptic();
+  showError('');
   playing.add(sound.id);
-  render();
+  setPlayingLabel(sound.text);
+  renderPadsOnly();
+
+  // Local preview immediately (user gesture) — don't wait on server decode.
+  const localPromise = playLocalMonitor(sound).catch((err) => {
+    showError(`Local monitor failed: ${err?.message || err}`);
+  });
+
   try {
     await playSound(sound.id);
   } catch (err) {
-    alert(err.message || String(err));
+    showError(`On-air play failed: ${err?.message || err}`);
+    console.error(err);
   }
-  if (localMonitor) {
-    try {
-      let audio = localAudio.get(sound.id);
-      if (!audio) {
-        audio = new Audio(fileUrl(sound.id));
-        localAudio.set(sound.id, audio);
-      }
-      audio.currentTime = 0;
-      await audio.play();
-      audio.onended = () => {
-        playing.delete(sound.id);
-        renderPadsOnly();
-      };
-    } catch {
-      /* autoplay / decode issues — server still played */
-    }
-  } else {
+
+  await localPromise;
+
+  if (!localMonitor) {
     setTimeout(() => {
       playing.delete(sound.id);
+      if (playingLabel === sound.text) setPlayingLabel('');
       renderPadsOnly();
-    }, 400);
+    }, 600);
   }
 }
 
@@ -155,16 +209,18 @@ function render() {
           <p>Server mix → muxshed RTMP · phone/desktop remote</p>
         </div>
       </div>
-      <div class="status-row">
+      <div class="status-row" id="status-row">
         ${statusPill()}
         <span class="pill">Voices ${status.activeVoices || 0}</span>
-        ${status.lastError ? `<span class="pill err" title="${escapeAttr(status.lastError)}">Error</span>` : ''}
+        ${status.lastError ? `<span class="pill err" title="${escapeAttr(status.lastError)}">RTMP err</span>` : ''}
       </div>
     </header>
 
     <div class="offline-banner ${online ? '' : 'show'}">
       You’re offline. On-air play needs the Docker mixer — reconnect to Tailscale / network.
     </div>
+    <div class="error-banner ${lastError ? 'show' : ''}" id="error-banner">${escapeHtml(lastError)}</div>
+    <div class="playing-toast ${playingLabel ? 'show' : ''}" id="playing-toast">${playingLabel ? `Playing: ${escapeHtml(playingLabel)}` : ''}</div>
 
     <div class="dock">
       <button class="btn danger" id="btn-stop-all" type="button">Stop all</button>
@@ -476,16 +532,23 @@ async function boot() {
         render();
       } else if (msg.type === 'status') {
         status = msg.status;
-        const pillHost = document.querySelector('.status-row');
-        if (pillHost) render();
+        updateStatusPills();
       } else if (msg.type === 'settings') {
         settings = { ...settings, ...msg.settings };
       } else if (msg.type === 'play') {
         playing.add(msg.soundId);
+        const s = sounds.find((x) => x.id === msg.soundId);
+        if (s) setPlayingLabel(s.text);
+        updateStatusPills();
         renderPadsOnly();
       } else if (msg.type === 'stop') {
-        if (msg.soundId === '*') playing.clear();
-        else playing.delete(msg.soundId);
+        if (msg.soundId === '*') {
+          playing.clear();
+          setPlayingLabel('');
+        } else {
+          playing.delete(msg.soundId);
+        }
+        updateStatusPills();
         renderPadsOnly();
       }
     });

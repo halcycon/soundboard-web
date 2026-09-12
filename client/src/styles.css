@@ -135,6 +135,33 @@ select {
   display: block;
 }
 
+.error-banner {
+  display: none;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  background: #7f1d1dcc;
+  border: 1px solid #f87171;
+  white-space: pre-wrap;
+}
+
+.error-banner.show {
+  display: block;
+}
+
+.playing-toast {
+  display: none;
+  margin-bottom: 0.75rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  background: #134e4acc;
+  border: 1px solid var(--accent);
+}
+
+.playing-toast.show {
+  display: block;
+}
+
 .toolbar {
   display: grid;
   grid-template-columns: 1fr auto;
